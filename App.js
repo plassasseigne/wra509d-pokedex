@@ -1,19 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-export default function App() {
+import Home from './screens/HomeScreen'
+
+const Stack = createNativeStackNavigator()
+const Tab = createBottomTabNavigator()
+
+function HomeStack() {
   return (
-    <View style={styles.container}>
-      <Text>Hello World</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen name='HomeStack' component={Home} options={{title: 'Home'}} />
+    </Stack.Navigator>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-})
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator initialRouteName='Home'>
+        <Tab.Screen name='Home' component={HomeStack} options={{title: 'Pokedex'}}></Tab.Screen>
+      </Tab.Navigator>
+    </NavigationContainer>
+  )
+}
