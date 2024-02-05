@@ -1,47 +1,19 @@
-import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
-  const [data, setData] = useState([])
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axios.get('https://pokeapi.co/api/v2/pokemon/')
-        const data = response.data
-
-        setData(data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    getData()
-  }, [])
-
-  useEffect(() => {
-    console.log(data)
-  }, [data])
-
   return (
-    <View>
-      <View>
-        <StatusBar style="auto" />
-      </View>
-      <View>
-        <FlatList
-          numColumns={3}
-          data={data.results}
-          renderItem={({item}) => <Text>{item.name}</Text>}
-          keyExtractor={item => item.name}
-        />
-      </View>
+    <View style={styles.container}>
+      <Text>Hello World</Text>
+      <StatusBar style="auto" />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 })
