@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from './screens/HomeScreen'
+import Detail from './screens/DetailScreen'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -12,6 +13,7 @@ function HomeStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name='HomeStack' component={Home} options={{title: 'Home'}} />
+      <Stack.Screen name='Detail' component={Detail} />
     </Stack.Navigator>
   )
 }
