@@ -6,14 +6,15 @@ import PokemonCard from '../components/PokemonCard'
 
 export default function HomeScreen({navigation}) {
   const [data, setData] = useState([])
+  const [newPage, setNewPage] = useState([])
 
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await axios.get('https://pokeapi.co/api/v2/pokemon/')
-        const data = response.data
 
-        setData(data)
+        setData(response.data.results)
+        setNewPage(response.data.next)
       } catch (error) {
         console.log(error)
       }
@@ -22,8 +23,18 @@ export default function HomeScreen({navigation}) {
     getData()
   }, [])
 
+  const getMoreData = async () => {
+    try {
+      const response = await axios.get(newPage)
+
+      setData((data) => [...data, ...response.data.results])
+      setNewPage(response.data.next)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
-    // console.log(data)
   }, [data])
 
   return (
@@ -34,9 +45,11 @@ export default function HomeScreen({navigation}) {
       <View>
         <FlatList
           numColumns={2}
-          data={data.results}
+          data={data}
           renderItem={({ item }) => <PokemonCard name={item.name} url={item.url} navigation={navigation} />}
           keyExtractor={item => item.name}
+          onEndReached={getMoreData}
+          style={{marginLeft: 5, marginRight: 5}}
         />
       </View>
     </View>
