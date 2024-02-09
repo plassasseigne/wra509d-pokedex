@@ -1,12 +1,30 @@
 import axios from 'axios';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Image, Text, StyleSheet, TouchableOpacity, Animated, Easing } from "react-native";
 import { useEffect, useState } from 'react';
 
 export default function PokemonCard({name, url, navigation}) {
   const [data, setData] = useState([])
   const [colorType, setColorType] = useState([[]])
   const id = url.split('/')[url.split('/').length - 2];
+
   const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  const [imageState, setImageState] = useState({loaded: false})
+  const spinValue = new Animated.Value(0)
+
+  Animated.timing(
+    spinValue,
+    {
+      toValue: 1,
+      duration: 5000,
+      easing: Easing.linear,
+      useNativeDriver: true
+    }
+  ).start()
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+  })
 
   useEffect(() => {
     const getData = async () => {
@@ -25,23 +43,34 @@ export default function PokemonCard({name, url, navigation}) {
 
   useEffect(() => {
     const colorTypes = (types) => {
-      const nouvelEtat = [...colorType]
+      const newColor = [...colorType]
       let i = 0
 
       types.forEach(type => {
-        type?.type.name == 'grass' ? nouvelEtat[0][i] = '#9BCC50' :
-        type?.type.name == 'fire' ? nouvelEtat[0][i] = '#FD7D24' :
-        type?.type.name == 'water' ? nouvelEtat[0][i] = '#2C94F3' :
-        type?.type.name == 'normal' ? nouvelEtat[0][i] = '#A3ABAF' :
-        type?.type.name == 'poison' ? nouvelEtat[0][i] = '#A16AB7' :
-        type?.type.name == 'bug' ? nouvelEtat[0][i] = '#729F3F' :
-        type?.type.name == 'flying' ? nouvelEtat[0][i] = '#6FD9F7' :
-        nouvelEtat[0][i] = ['null']
+        type?.type.name == 'grass' ? newColor[0][i] = '#9BCC50' :
+        type?.type.name == 'fire' ? newColor[0][i] = '#FD7D24' :
+        type?.type.name == 'water' ? newColor[0][i] = '#2C94F3' :
+        type?.type.name == 'normal' ? newColor[0][i] = '#A3ABAF' :
+        type?.type.name == 'poison' ? newColor[0][i] = '#A16AB7' :
+        type?.type.name == 'bug' ? newColor[0][i] = '#729F3F' :
+        type?.type.name == 'flying' ? newColor[0][i] = '#6FD9F7' :
+        type?.type.name == 'electric' ? newColor[0][i] = '#F4D06B' :
+        type?.type.name == 'ground' ? newColor[0][i] = '#AB9842' :
+        type?.type.name == 'fairy' ? newColor[0][i] = '#FDB9E9' :
+        type?.type.name == 'fighting' ? newColor[0][i] = '#D34723' :
+        type?.type.name == 'psychic' ? newColor[0][i] = '#F366B9' :
+        type?.type.name == 'rock' ? newColor[0][i] = '#A06921' :
+        type?.type.name == 'steel' ? newColor[0][i] = '#9EB7B8' :
+        type?.type.name == 'ghost' ? newColor[0][i] = '#7B62A3' :
+        type?.type.name == 'ice' ? newColor[0][i] = '#51C4E7' :
+        type?.type.name == 'dragon' ? newColor[0][i] = '#1669BF' :
+        type?.type.name == 'dark' ? newColor[0][i] = '#707070' :
+        newColor[0][i] = 'red'
 
         i++
       })
 
-      setColorType(nouvelEtat)
+      setColorType(newColor)
     }
 
     if (data?.types) {
@@ -62,7 +91,10 @@ export default function PokemonCard({name, url, navigation}) {
           <Text style={styles.id}>{'#00' + id}</Text>
         </View>
         <View style={{alignItems: 'center'}}>
-          <Image style={styles.image} source={{uri: image}} />
+          {imageState.loaded ? null :
+            <Animated.Image style={{...styles.imageLoading, transform: [{rotate: spin}]}} source={require('../assets/pokeball.png')}/>
+          }
+          <Image style={imageState.loaded ? styles.image : {display: 'none'}} src={image} onLoad={() => setImageState({loaded: true})}></Image>
           <Text style={styles.name}>{name.charAt(0).toUpperCase() + name.slice(1)}</Text>
         </View>
         <View style={styles.types}>
@@ -107,6 +139,10 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
+  },
+  imageLoading: {
+    width: 100,
+    height: 100
   },
   types: {
     flexDirection: 'row',
