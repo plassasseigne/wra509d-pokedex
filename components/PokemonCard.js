@@ -14,11 +14,10 @@ export default function PokemonCard({name, url, navigation}) {
     const getData = async () => {
       try {
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
-        const data = response.data
 
-        setData(data)
+        setData(response.data)
       } catch (error) {
-        console.log(error)
+        console.log('PokemonCard : ' + error)
       }
     }
 
@@ -62,8 +61,15 @@ export default function PokemonCard({name, url, navigation}) {
     }
   }, [data])
 
-  useEffect(() => {
-  }, [colorType])
+  const idFormatting = (id) => {
+    if (id.length == 1) {
+      return (`#00${id}`)
+    } else if (id.length == 2) {
+      return (`#0${id}`)
+    } else if (id.length == 3) {
+      return (`#${id}`)
+    }
+  }
 
   return (
     <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Detail', {id: id})}>
@@ -72,7 +78,7 @@ export default function PokemonCard({name, url, navigation}) {
           <View style={{...styles.typeBg, backgroundColor: data?.types ? colorType[0][0] : 'red' }}></View>
         </View>
         <View>
-          <Text style={styles.id}>{'#00' + id}</Text>
+          <Text style={styles.id}>{idFormatting(id)}</Text>
         </View>
         <View style={{alignItems: 'center'}}>
           {imageState.loaded ? null :
@@ -97,7 +103,7 @@ const styles = StyleSheet.create({
   card: {
     position: 'relative',
     margin: 5,
-    flex: 1,
+    width: '47%',
     borderRadius: 15,
     backgroundColor: 'white',
     overflow: 'hidden',
