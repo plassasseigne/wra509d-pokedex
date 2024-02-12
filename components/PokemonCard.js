@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { View, Image, Text, StyleSheet, TouchableOpacity, Animated, Easing } from "react-native";
+import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useEffect, useState } from 'react';
 
 export default function PokemonCard({name, url, navigation}) {
@@ -9,22 +9,6 @@ export default function PokemonCard({name, url, navigation}) {
 
   const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
   const [imageState, setImageState] = useState({loaded: false})
-  const spinValue = new Animated.Value(0)
-
-  Animated.timing(
-    spinValue,
-    {
-      toValue: 1,
-      duration: 5000,
-      easing: Easing.linear,
-      useNativeDriver: true
-    }
-  ).start()
-
-  const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg']
-  })
 
   useEffect(() => {
     const getData = async () => {
@@ -92,7 +76,7 @@ export default function PokemonCard({name, url, navigation}) {
         </View>
         <View style={{alignItems: 'center'}}>
           {imageState.loaded ? null :
-            <Animated.Image style={{...styles.imageLoading, transform: [{rotate: spin}]}} source={require('../assets/pokeball.png')}/>
+            <Image style={styles.imageLoading} source={require('../assets/pokeball.png')}/>
           }
           <Image style={imageState.loaded ? styles.image : {display: 'none'}} src={image} onLoad={() => setImageState({loaded: true})}></Image>
           <Text style={styles.name}>{name.charAt(0).toUpperCase() + name.slice(1)}</Text>
