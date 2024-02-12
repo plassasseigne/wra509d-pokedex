@@ -34,9 +34,6 @@ export default function HomeScreen({navigation}) {
     }
   }
 
-  useEffect(() => {
-  }, [data])
-
   return (
     <View>
       <View>
@@ -47,7 +44,7 @@ export default function HomeScreen({navigation}) {
           numColumns={2}
           data={data}
           renderItem={({ item }) => <PokemonCard name={item.name} url={item.url} navigation={navigation} />}
-          keyExtractor={item => item.name}
+          keyExtractor={(item, index) => String(index)}
           onEndReached={getMoreData}
           style={{marginLeft: 5, marginRight: 5}}
         />
@@ -56,6 +53,4 @@ export default function HomeScreen({navigation}) {
   )
 }
 
-const styles = StyleSheet.create({
-
-})
+const styles = StyleSheet.create({})
