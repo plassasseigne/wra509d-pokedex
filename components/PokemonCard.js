@@ -77,6 +77,7 @@ export default function PokemonCard({name, url, navigation}) {
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <View style={{...styles.typeBg, backgroundColor: data?.types ? colorType[0][0] : 'red' }}></View>
         </View>
+        <Image style={styles.pokeballBg} source={require('../assets/pokeball.png')} />
         <View>
           <Text style={styles.id}>{idFormatting(id)}</Text>
         </View>
@@ -125,6 +126,14 @@ const styles = StyleSheet.create({
     width: 175,
     height: 175,
     borderRadius: 99
+  },
+  pokeballBg: {
+    position: 'absolute',
+    width: 150,
+    height: 150,
+    opacity: 0.04,
+    bottom: -70,
+    left: 50
   },
   image: {
     width: 100,
