@@ -72,7 +72,7 @@ export default function PokemonCard({name, url, navigation}) {
   }
 
   return (
-    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Detail', {id: id})}>
+    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Detail', {id: id, colorTypes: colorType})}>
       <View style={styles.container}>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <View style={{...styles.typeBg, backgroundColor: data?.types ? colorType[0][0] : 'red' }}></View>
