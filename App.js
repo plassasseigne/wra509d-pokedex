@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './screens/HomeScreen'
 import Detail from './screens/DetailScreen'
 import Search from './screens/SearchScreen'
+import Team from './screens/TeamScreen'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -38,6 +39,15 @@ function SearchStack() {
   )
 }
 
+function TeamStack() {
+  return (
+    <Stack.Navigator screenOptions={options.navigation}>
+      <Stack.Screen name='TeamStack' component={Team} options={{title: 'Team'}} />
+      <Stack.Screen name='Detail' component={Detail} />
+    </Stack.Navigator>
+  )
+}
+
 export default function App() {
   return (
     <NavigationContainer>
@@ -54,6 +64,7 @@ export default function App() {
       >
         <Tab.Screen name='Home' component={HomeStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
         <Tab.Screen name='Search' component={SearchStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
+        <Tab.Screen name='Team' component={TeamStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   )

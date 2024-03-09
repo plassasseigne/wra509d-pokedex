@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, Pressable } from 'react-native';
 import { useEffect, useState } from "react";
+import { storeData, getData, removeData } from '../utils/StorageService';
 
 export default function DetailScreen({route}) {
   const {id} = route.params
@@ -14,6 +15,8 @@ export default function DetailScreen({route}) {
   const [evolution, setEvolution] = useState([])
 
   const [description, setDescription] = useState('')
+
+  const [inTeam, setInTeam] = useState(false)
 
   const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 
@@ -36,7 +39,7 @@ export default function DetailScreen({route}) {
 
     const getSpecies = async () => {
       try {
-        const response  =await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
 
         setSpecies(response.data)
         setEvolutionUrl(response.data.evolution_chain?.url)
@@ -109,6 +112,65 @@ export default function DetailScreen({route}) {
     }
   }
 
+  const addTeam = async () => {
+    if (data !== undefined) {
+      try {
+        const team = await getData('team')
+        let teamArray = team
+   
+        if (teamArray === null) {
+          teamArray = []
+        }
+
+        if (teamArray.length >= 6) {
+          console.log('Max atteint')
+        } else {
+          teamArray.push(data)
+          await storeData('team', JSON.stringify(teamArray))
+          setInTeam(true)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  const removeTeam = async () => {
+    if (data !== undefined) {
+      const team = await getData('team')
+      const elementToRemove = team.find((element) => element.id === data.id)
+      const index = team.indexOf(elementToRemove)
+  
+      if (index > -1) {
+        team.splice(index, 1)
+      }
+  
+      await storeData('team', JSON.stringify(team))
+      setInTeam(false)
+    }
+  }
+
+  const ifTeam = async () => {
+    const team = await getData('team')
+
+    if (Array.isArray(team)) {
+      for (let i = 0; i < team.length; i++) {
+        const item = team[i];
+
+        if (item.name === data.name) {
+          setInTeam(true)
+          break
+        } else {
+          setInTeam(false)
+        }
+      }
+    }
+  }
+
+  useEffect(() => {
+    ifTeam()
+  }, [data])
+
   return (
     <ScrollView>
       <View style={styles.detailScreen}>
@@ -129,7 +191,23 @@ export default function DetailScreen({route}) {
             </View>
           ))}
         </View>
+
+        {inTeam === false ? (
+          <View style={{alignItems: 'center'}}>
+            <Pressable style={styles.button}>
+              <Text style={styles.textButton} onPress={addTeam}>Catch</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <View style={{alignItems: 'center'}}>
+            <Pressable style={styles.button}>
+              <Text style={styles.textButton} onPress={removeTeam}>Release</Text>
+            </Pressable>
+          </View>  
+        )}
+
         <Text style={styles.description}>{description}</Text>
+
         <View style={styles.infoContainer}>
           <View style={styles.infoEncart}>
             <Text style={styles.infoTitle}>Shape</Text>
@@ -273,5 +351,19 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     marginTop: 8,
     marginBottom: 8
+  },
+  button: {
+    borderRadius: 10,
+    backgroundColor: '#FF4F4F',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 7,
+    marginTop: 15,
+    width: 200
+  },
+  textButton: {
+    color: 'white',
+    textTransform: 'uppercase',
+    fontWeight: 'bold'
   }
 })
