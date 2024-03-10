@@ -8,6 +8,7 @@ import Home from './screens/HomeScreen'
 import Detail from './screens/DetailScreen'
 import Search from './screens/SearchScreen'
 import Team from './screens/TeamScreen'
+import Settings from './screens/SettingsScreen'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -48,6 +49,14 @@ function TeamStack() {
   )
 }
 
+function SettingsStack() {
+  return (
+    <Stack.Navigator screenOptions={options.navigation}>
+      <Stack.Screen name='SettingsStack' component={Settings} options={{title: 'Settings'}} />
+    </Stack.Navigator>
+  )
+}
+
 export default function App() {
   return (
     <NavigationContainer>
@@ -65,6 +74,7 @@ export default function App() {
         <Tab.Screen name='Home' component={HomeStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
         <Tab.Screen name='Search' component={SearchStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
         <Tab.Screen name='Team' component={TeamStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
+        <Tab.Screen name='Settings' component={SettingsStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   )
