@@ -132,9 +132,10 @@ export default function SettingsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   switch: {
-    flex: 1,
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "space-between",
+    marginLeft: 10
   },
   titleInfos: {
     fontSize: 18,
