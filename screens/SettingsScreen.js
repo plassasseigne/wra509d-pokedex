@@ -95,7 +95,7 @@ export default function SettingsScreen({ navigation }) {
         <Text style={styles.username}>John Doe</Text>
       </View>
       <View>
-          <Text style={styles.titleInfos}>Informations</Text>
+          {/* <Text style={styles.titleInfos}>Informations</Text> */}
           <Text style={styles.titleInfos}>Options</Text>
           <View style={styles.switch}>
             <Text>Change orientation screen</Text>
