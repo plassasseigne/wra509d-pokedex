@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,7 +16,7 @@ const Tab = createBottomTabNavigator()
 function MainHeader() {
   return (
     <Image
-      style={{ width: 125, height: 45, left: 100 }}
+      style={{ width: 125, height: 45 }}
       source={require('./assets/pokemon_logo_white.png')}
     />
   )
@@ -63,11 +63,12 @@ export default function App() {
       <Tab.Navigator
         initialRouteName='Home'
         screenOptions={{
+          headerTitleAlign: 'center',
           tabBarStyle: {
             backgroundColor: "#FF4F4F"
           },
           headerStyle: {
-            backgroundColor: "#FF4F4F"
+            backgroundColor: "#FF4F4F",
           },
           tabBarLabelStyle: 
           {
