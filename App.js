@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -68,17 +68,28 @@ export default function App() {
           },
           headerStyle: {
             backgroundColor: "#FF4F4F"
+          },
+          tabBarLabelStyle: 
+          {
+            color: 'white'
           }
         }}
       >
-        <Tab.Screen name='Home' component={HomeStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
-        <Tab.Screen name='Search' component={SearchStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
-        <Tab.Screen name='Team' component={TeamStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
-        <Tab.Screen name='Settings' component={SettingsStack} options={{headerTitle: (props) => <MainHeader {...props} />}}></Tab.Screen>
+        <Tab.Screen name='Home' component={HomeStack} options={{headerTitle: (props) => <MainHeader {...props} />, tabBarIcon: () => (<Image style={styles.icon} source={require('./assets/footer/home.png')}></Image>)}}></Tab.Screen>
+        <Tab.Screen name='Search' component={SearchStack} options={{headerTitle: (props) => <MainHeader {...props} />, tabBarIcon: () => (<Image style={styles.icon} source={require('./assets/footer/search.png')}></Image>)}}></Tab.Screen>
+        <Tab.Screen name='Team' component={TeamStack} options={{headerTitle: (props) => <MainHeader {...props} />, tabBarIcon: () => (<Image style={styles.icon} source={require('./assets/footer/team.png')}></Image>)}}></Tab.Screen>
+        <Tab.Screen name='Settings' component={SettingsStack} options={{headerTitle: (props) => <MainHeader {...props} />, tabBarIcon: () => (<Image style={styles.icon} source={require('./assets/footer/settings.png')}></Image>)}}></Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   )
 }
+
+const styles = StyleSheet.create({
+  icon: {
+    width: 20,
+    height: 20
+  }
+})
 
 const options = {
   navigation: {
